@@ -21,10 +21,16 @@ export class Alert extends Component {
             }   
             if (error.msg.message){
                 alert.error(`Message: ${error.msg.message.join()}`)
+            }  
+            if (error.msg.non_field_errors){
+                alert.error(`Message: ${error.msg.non_field_errors.join()}`)
             }
-                
-            
-            
+            if (error.msg.password){
+                alert.error(`Message: ${error.msg.password.join()}`)
+            }
+            if (error.msg.username){
+                alert.error(`Message: ${error.msg.username.join()}`)
+            }
         }
         if (message !== prevProps.message){
             if (message.deleteLead){
@@ -36,10 +42,14 @@ export class Alert extends Component {
             if (message.addLead){
                 alert.success(message.addLead);
             }
-                
-            
-
+            if (message.passwordNotMatch){
+                alert.error(message.passwordNotMatch);
+            }
+            if (message.Required){
+                alert.error(message.Required);
+            }
         }
+        
     }
     render() {
         return <Fragment />;

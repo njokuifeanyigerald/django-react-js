@@ -1,8 +1,50 @@
 import React, { Component } from 'react'
-import {link, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import { connect} from 'react-redux';
+import PropTypes from 'prop-types'
+import {logout} from '../../actions/auth'
 
-export default class Header extends Component {
+class Header extends Component {
+
+    static propTypes = {
+        auth: PropTypes.object.isRequired,
+        logout: PropTypes.func.isRequired
+    }
     render() {
+        const {isAuthenticated, user} = this.props.auth;
+
+        const guestLinks =(
+            <ul className="navbar-nav mr-auto">
+                <li className="nav-item text-light">
+                    <Link to="/register" className="nav-link">
+                        Register
+                    </Link>
+                </li>
+                <li className="nav-item ">
+                    <Link to="/login" className="nav-link">
+                        Login
+                    </Link>
+                </li> 
+            </ul>
+        );
+        const authLinks = (
+            <ul className="navbar-nav mr-auto">
+                <span className="navbar-text mr-3">
+                    <strong className="text-capitalize text-primary">
+                        {user ? `welcome ${user.username}` : ""}
+                    </strong>
+                </span>
+                <li className="nav-item text-light">
+                    <Link to="/register" className="nav-link">
+                       <button onClick={this.props.logout} className="btn btn-outline-info text-light">
+                           Logout
+                       </button>
+                    </Link>
+                </li>
+            </ul>
+                    
+        )
+
         return (
             <div>
                 <nav className="navbar navbar-expand-lg text-white bg-dark">
@@ -16,23 +58,7 @@ export default class Header extends Component {
                     </button>
                 
                     <div className="collapse navbar-collapse " id="navbarSupportedContent">
-                        <ul className="navbar-nav mr-auto">
-                            <li className="nav-item active">
-                                <a className="nav-link text-primary" href="#"> <span className="sr-only">(current)</span></a>
-                            </li> 
-                            <li className="nav-item text-light">
-                               <Link to="/register" className="nav-link">
-                                   Register
-                               </Link>
-                            </li>
-                            <li className="nav-item ">
-                               <Link to="/login" className="nav-link">
-                                   Login
-                               </Link>
-                            </li> 
-                            
-                            
-                        </ul>
+                        {isAuthenticated ? authLinks : guestLinks }
                     
                     </div>
                 </nav>
@@ -40,3 +66,10 @@ export default class Header extends Component {
         )
     }
 }
+
+
+const mapStateToProps = state => ({
+    auth: state.auth
+})
+
+export default connect(mapStateToProps, {logout}) (Header)

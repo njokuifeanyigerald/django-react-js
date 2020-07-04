@@ -11,6 +11,8 @@ import {HashRouter as Router, Route,Switch,Redirect} from 'react-router-dom';
 import Login from './accounts/login';
 import Register from './accounts/register';
 import PrivateRoute from './common/privateRoute';
+import  {loadUser} from '../actions/auth'
+
 
 const alertOptions = {
   timeout: 3000,
@@ -18,6 +20,10 @@ const alertOptions = {
 }
 
 class App extends Component {
+
+  componentDidMount(){
+    store.dispatch(loadUser())
+  }
 
   render() {
     return (
